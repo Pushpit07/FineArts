@@ -1,1 +1,54 @@
-/* Styles go here */
+body {
+    background-color: #1b1927;
+    color: rgb(161, 161, 161);
+}
+
+.identicon {
+	border-radius: 3px;
+}
+
+.anonyverse {
+	color: #e92d75 !important;
+	font-size: 1.3em !important;
+}
+
+.navbaar {
+    background-color: #131016 !important;
+}
+
+.text_color {
+    color: rgb(190, 188, 188) !important;
+}
+
+.input_box {
+    background-color: #131016 !important;
+    border: none !important;
+    outline: none !important;
+    color: rgb(175, 175, 175) !important;
+}
+
+.input_box:active {
+    background-color: #131016 !important;
+    border: none !important;
+    outline: none !important;
+}
+
+.share_button {
+    background-color: #d62a6c;
+    color: rgb(233, 233, 233) !important;
+    border: none !important;
+    outline: none !important;
+}
+
+.share_button:hover {
+    background-color: #af1e56;
+    color: rgb(228, 228, 228) !important;
+}
+
+.tip_btn {
+    color: #e92d75 !important;
+}
+
+.background_dark  {
+    background-color: #131016 !important;
+}

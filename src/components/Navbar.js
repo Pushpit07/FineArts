@@ -5,32 +5,32 @@ class Navbar extends Component {
 
     render() {
         return (
-            <nav className="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
-                <a
-                    className="navbar-brand col-sm-3 col-md-2 mr-0"
-                    href="https://www.github.com/Pushpit07"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    AnonyVerse
-                </a>
+            <nav className="navbar navbar-light fixed-top shadow-lg navbaar" style={{
+                height: "60px"
+            }
+            }>
+                <span class="navbar-brand mb-0 h1 anonyverse ml-3">AnonyVerse</span>
+
                 <ul className="navbar-nav px-3">
                     <li className="nav-item text-nowrap d-none d-sm-none d-sm-block">
-                        <small className="text-secondary">
+                        <small className="mr-4 text_color">
                             <small id="account">{this.props.account}</small>
                         </small>
+
                         {this.props.account
                             ? <img
-                                className='ml-2'
-                                width='30'
-                                height='30'
-                                src={`data:image/png;base64,${new Identicon(this.props.account, 20).toString()}`}
+                                className="ml-1 mr-3 identicon"
+                                width='25'
+                                height='25'
+                                src={`data:image/png;base64,${new Identicon(this.props.account.substr(5, 24), 40).toString()}`}
+                                alt=""
                             />
                             : <span></span>
                         }
+
                     </li>
                 </ul>
-            </nav>
+            </nav >
         );
     }
 }

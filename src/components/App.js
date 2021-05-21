@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import Web3 from 'web3';
-// import Identicon from 'identicon.js';
 import './App.css';
-import AnonyVerse from '../abis/AnonyVerse.json'
-import Navbar from './Navbar'
-// import Main from './Main'
+import AnonyVerse from '../abis/AnonyVerse.json';
+import Navbar from './Navbar';
+import Main from './Main';
 
 class App extends Component {
 
@@ -23,8 +22,8 @@ class App extends Component {
 	}
 
 	async componentWillMount() {
-		await this.loadWeb3()
-		await this.loadBlockchainData()
+		await this.loadWeb3();
+		await this.loadBlockchainData();
 	}
 
 	async loadWeb3() {
@@ -72,7 +71,7 @@ class App extends Component {
 
 	createPost(content) {
 		this.setState({ loading: true })
-		this.state.socialNetwork.methods.createPost(content).send({ from: this.state.account })
+		this.state.anonyVerse.methods.createPost(content).send({ from: this.state.account })
 			.once('receipt', (receipt) => {
 				this.setState({ loading: false })
 			})
@@ -80,7 +79,7 @@ class App extends Component {
 
 	tipPost(id, tipAmount) {
 		this.setState({ loading: true })
-		this.state.socialNetwork.methods.tipPost(id).send({ from: this.state.account, value: tipAmount })
+		this.state.anonyVerse.methods.tipPost(id).send({ from: this.state.account, value: tipAmount })
 			.once('receipt', (receipt) => {
 				this.setState({ loading: false })
 			})
@@ -93,16 +92,24 @@ class App extends Component {
 				<Navbar account={this.state.account} />
 				<div className="container-fluid mt-5">
 					<div className="row">
-						<main role="main" className="col-lg-12 d-flex text-center">
-							<div className="content mr-auto ml-auto">
+						<main role="main" className="col-lg-12 d-flex text-center mt-5">
+							<div className="content mr-auto ml-auto mt-4">
 								<h1>AnonyVerse</h1>
 								<p>
-									A <code>decentralised social media</code> platform
+									A &nbsp;<code>decentralised social media</code>&nbsp; platform
                 				</p>
 							</div>
 						</main>
 					</div>
 				</div>
+				{ this.state.loading
+					? <div id="loader" className="text-center mt-5"><p>Loading...</p></div>
+					: <Main
+						posts={this.state.posts}
+						createPost={this.createPost}
+						tipPost={this.tipPost}
+					/>
+				}
 			</div>
 		);
 	}
