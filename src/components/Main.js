@@ -20,12 +20,12 @@ class Main extends Component {
                                         id="postContent"
                                         type="text"
                                         ref={(input) => { this.postContent = input }}
-                                        className="form-control input_box shadow"
+                                        className="form-control input_box shadow-sm"
                                         placeholder="What's on your mind?"
                                         autocomplete="off"
                                         required />
                                 </div>
-                                <button type="submit" className="btn btn-primary btn-block m-auto share_button shadow" style={{ maxWidth: '300px' }}>Share</button>
+                                <button type="submit" className="btn btn-primary btn-block m-auto share_button shadow-sm" style={{ maxWidth: '300px' }}>Share</button>
                             </form>
                             <p className="mt-5">&nbsp;</p>
                             {this.props.posts.map((post, key) => {

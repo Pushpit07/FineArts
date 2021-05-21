@@ -16,6 +16,10 @@ body {
     background-color: #131016 !important;
 }
 
+.cursor_ptr {
+    cursor: pointer;
+}
+
 .text_color {
     color: rgb(190, 188, 188) !important;
 }

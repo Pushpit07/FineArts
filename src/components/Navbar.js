@@ -9,7 +9,7 @@ class Navbar extends Component {
                 height: "60px"
             }
             }>
-                <span class="navbar-brand mb-0 h1 anonyverse ml-3">AnonyVerse</span>
+                <span class="navbar-brand mb-0 h1 anonyverse ml-3 cursor_ptr"><i className="fas fa-theater-masks mr-3 ml-1 cursor_ptr"></i>AnonyVerse</span>
 
                 <ul className="navbar-nav px-3">
                     <li className="nav-item text-nowrap d-none d-sm-none d-sm-block">
