@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import Web3 from 'web3';
 import './App.css';
-import AnonyVerse from '../abis/AnonyVerse.json';
+import FineArts from '../abis/FineArts.json';
 import Navbar from './Navbar';
 import Main from './Main';
+
+const ipfsClient = require('ipfs-http-client');
+const ipfs = ipfsClient({ host: 'ipfs.infura.io', port: 5001, protocol: 'https' });
 
 class App extends Component {
 
@@ -14,6 +17,7 @@ class App extends Component {
 			anonyVerse: null,
 			postCount: 0,
 			posts: [],
+			buffer: '',
 			loading: true
 		}
 
@@ -46,15 +50,15 @@ class App extends Component {
 		this.setState({ account: accounts[0] })
 		// Network ID
 		const networkId = await web3.eth.net.getId()
-		const networkData = AnonyVerse.networks[networkId]
+		const networkData = FineArts.networks[networkId]
 		if (networkData) {
-			const anonyVerse = web3.eth.Contract(AnonyVerse.abi, networkData.address)
-			this.setState({ anonyVerse })
-			const postCount = await anonyVerse.methods.postCount().call()
+			const fineArts = web3.eth.Contract(FineArts.abi, networkData.address)
+			this.setState({ fineArts })
+			const postCount = await fineArts.methods.postCount().call()
 			this.setState({ postCount })
 			// Load Posts
 			for (var i = 1; i <= postCount; i++) {
-				const post = await anonyVerse.methods.posts(i).call()
+				const post = await fineArts.methods.posts(i).call()
 				this.setState({
 					posts: [...this.state.posts, post]
 				})
@@ -65,22 +69,42 @@ class App extends Component {
 			})
 			this.setState({ loading: false })
 		} else {
-			window.alert('AnonyVerse contract not deployed to detected network.')
+			window.alert('FineArts contract not deployed to detected network.')
+		}
+	}
+
+	captureFile = event => {
+		event.preventDefault();
+		const file = event.target.files[0];
+		const reader = new window.FileReader();
+		reader.readAsArrayBuffer(file);
+
+		reader.onloadend = () => {
+			this.setState({ buffer: Buffer(reader.result) });
+			console.log('buffer', this.state.buffer);
 		}
 	}
 
 	createPost(content) {
-		this.setState({ loading: true })
-		this.state.anonyVerse.methods.createPost(content).send({ from: this.state.account })
-			.once('receipt', (receipt) => {
-				this.setState({ loading: false })
-			})
+		ipfs.add(this.state.buffer, (error, result) => {
+			console.log('ipfsResult', result);
+			if (error) {
+				console.error(error);
+				return;
+			}
+
+			this.setState({ loading: true })
+			this.state.fineArts.methods.createPost(result[0].hash, content).send({ from: this.state.account })
+				.on('transactionHash', (hash) => {
+					this.setState({ loading: false })
+				})
+		})
 	}
 
 	tipPost(id, tipAmount) {
 		this.setState({ loading: true })
-		this.state.anonyVerse.methods.tipPost(id).send({ from: this.state.account, value: tipAmount })
-			.once('receipt', (receipt) => {
+		this.state.fineArts.methods.tipPost(id).send({ from: this.state.account, value: tipAmount })
+			.on('transactionHash', (hash) => {
 				this.setState({ loading: false })
 			})
 	}
@@ -94,10 +118,10 @@ class App extends Component {
 					<div className="row">
 						<main role="main" className="col-lg-12 d-flex text-center mt-5">
 							<div className="content mr-auto ml-auto mt-4">
-								<h1>AnonyVerse</h1>
+								<h1>Fine Arts</h1>
 								<p>
-									A &nbsp;<code>decentralised social media</code>&nbsp; platform
-                				</p>
+									A &nbsp;<code className="purple_text">decentralised</code>&nbsp; platform to get &nbsp;<code className="purple_text">value for content</code>
+								</p>
 							</div>
 						</main>
 					</div>
@@ -108,6 +132,7 @@ class App extends Component {
 						posts={this.state.posts}
 						createPost={this.createPost}
 						tipPost={this.tipPost}
+						captureFile={this.captureFile}
 					/>
 				}
 			</div>

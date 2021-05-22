@@ -1,11 +1,12 @@
 pragma solidity ^0.5.0;
 
-contract AnonyVerse {
+contract FineArts {
     string public name;
     uint256 public postCount = 0;
 
     struct Post {
         uint256 id;
+        string imgHash;
         string content;
         uint256 tipAmount;
         address payable author;
@@ -14,11 +15,12 @@ contract AnonyVerse {
     mapping(uint256 => Post) public posts;
 
     constructor() public {
-        name = "AnonyVerse";
+        name = "FineArts";
     }
 
     event PostCreated(
         uint256 id,
+        string imgHash,
         string content,
         uint256 tipAmount,
         address payable author
@@ -26,19 +28,22 @@ contract AnonyVerse {
 
     event PostTipped(
         uint256 id,
+        string imgHash,
         string content,
         uint256 tipAmount,
         address payable author
     );
 
-    function createPost(string memory _content) public {
+    function createPost(string memory _imgHash, string memory _content) public {
+        require(bytes(_imgHash).length > 0);
         require(bytes(_content).length > 0);
+        require(msg.sender != address(0x0));
         // Increment post count
         postCount++;
         // Create post
-        posts[postCount] = Post(postCount, _content, 0, msg.sender);
+        posts[postCount] = Post(postCount, _imgHash, _content, 0, msg.sender);
         // Trigger event
-        emit PostCreated(postCount, _content, 0, msg.sender);
+        emit PostCreated(postCount, _imgHash, _content, 0, msg.sender);
     }
 
     function tipPost(uint256 _id) public payable {
@@ -54,6 +59,12 @@ contract AnonyVerse {
         // Update the post
         posts[_id] = _post;
         // Trigger an event
-        emit PostTipped(postCount, _post.content, _post.tipAmount, _author);
+        emit PostTipped(
+            postCount,
+            _post.imgHash,
+            _post.content,
+            _post.tipAmount,
+            _author
+        );
     }
 }

@@ -1,5 +1,5 @@
-const AnonyVerse = artifacts.require("AnonyVerse");
+const FineArts = artifacts.require("FineArts");
 
 module.exports = function (deployer) {
-    deployer.deploy(AnonyVerse);
+    deployer.deploy(FineArts);
 };

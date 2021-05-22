@@ -21,16 +21,17 @@ class Main extends Component {
                                         type="text"
                                         ref={(input) => { this.postContent = input }}
                                         className="form-control input_box shadow-sm"
-                                        placeholder="What's on your mind?"
-                                        autocomplete="off"
+                                        placeholder="What do you want to share today?"
+                                        autoComplete="off"
                                         required />
                                 </div>
+                                <input type="file" accept=".jpg, .jpeg, .png, .bmp, .gif, .mp4, .mkv, .ogg, .wmv" onChange={this.props.captureFile} className="upload mb-5 shadow" />
                                 <button type="submit" className="btn btn-primary btn-block m-auto share_button shadow-sm" style={{ maxWidth: '300px' }}>Share</button>
                             </form>
                             <p className="mt-5">&nbsp;</p>
                             {this.props.posts.map((post, key) => {
                                 return (
-                                    <div className="card mb-4 background_dark" key={key} >
+                                    <div className="card mb-4 background_dark p-2" key={key} >
                                         <div className="card-header">
                                             <img
                                                 className='mr-2 identicon'
@@ -42,6 +43,12 @@ class Main extends Component {
                                         </div>
                                         <ul id="postList" className="list-group list-group-flush">
                                             <li className="list-group-item background_dark text_color">
+                                                <p className="text-center">
+                                                    <a href={`https://ipfs.infura.io/ipfs/${post.imgHash}`} target="_blank">
+                                                        <img src={`https://ipfs.infura.io/ipfs/${post.imgHash}`} className="image" />
+                                                    </a>
+                                                    {/* <video src={`https://ipfs.infura.io/ipfs/${post.imgHash}`} className="image" controls /> */}
+                                                </p>
                                                 <p>{post.content}</p>
                                             </li>
                                             <li key={key} className="list-group-item py-2 background_dark">
@@ -66,7 +73,7 @@ class Main extends Component {
                         </div>
                     </main>
                 </div>
-            </div>
+            </div >
         );
     }
 }
